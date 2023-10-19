@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useRef } from "react";
+import "./App.css";
+import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
+import { EducationForm } from "./Education.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [personalInfo, setPersonalInfo] = useState({
+    fullName: "Name",
+    email: "",
+    phoneNumber: "",
+    address: "",
+  });
+  const [educationInfo, setEducationInfo] = useState({});
+  const [educationFormState, setEducationFormState] = useState({
+    editing: null,
+    isCollapsed: true,
+  });
+
+  let personalDetailsReferences = {
+    fullNameRef: useRef(),
+    emailRef: useRef(),
+    phoneNumberRef: useRef(),
+    addressRef: useRef(),
+  };
+
+  function updatePersonalInfo() {
+    let newPersonalInfo = { ...personalInfo };
+    newPersonalInfo.fullName =
+      personalDetailsReferences.fullNameRef.current.value;
+    newPersonalInfo.email = personalDetailsReferences.emailRef.current.value;
+    newPersonalInfo.phoneNumber =
+      personalDetailsReferences.phoneNumberRef.current.value;
+    newPersonalInfo.address =
+      personalDetailsReferences.addressRef.current.value;
+    setPersonalInfo(newPersonalInfo);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="page-splitter">
+        <div className="left-panel-div">
+          <PersonalDetailsForm
+            personalInfo={personalInfo}
+            personalInfoChanged={updatePersonalInfo}
+            personalInfoReferences={personalDetailsReferences}
+          />
+          <EducationForm
+            educationInfo={educationInfo}
+            educationFormState={educationFormState}
+          />
+        </div>
+        <div className="right-panel-div">
+          <PersonalDetailsHeader personalInfo={personalInfo} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

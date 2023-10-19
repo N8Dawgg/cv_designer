@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import "./App.css";
 import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
-import { EducationForm } from "./Education.jsx";
+import { EducationCVListing, EducationForm } from "./Education.jsx";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
@@ -10,7 +11,7 @@ function App() {
     phoneNumber: "",
     address: "",
   });
-  const [educationInfo, setEducationInfo] = useState({});
+  const [educationInfo, setEducationInfo] = useState([]);
   const [educationFormState, setEducationFormState] = useState({
     editing: null,
     isCollapsed: true,
@@ -35,6 +36,51 @@ function App() {
     setPersonalInfo(newPersonalInfo);
   }
 
+  function toggleEduFormCollapse() {
+    let newEducationFormState = { ...educationFormState };
+    newEducationFormState.isCollapsed = !newEducationFormState.isCollapsed;
+    setEducationFormState(newEducationFormState);
+  }
+
+  function newEduEntry() {
+    let newEducationInfo = [...educationInfo];
+    let newEducationEntry = {
+      school: "Test",
+      degree: "",
+      startDate: "",
+      endDate: "",
+      location: "",
+      id: uuid(),
+    };
+    newEducationInfo.push(newEducationEntry);
+    setEducationInfo(newEducationInfo);
+    let newEducationFormState = { ...educationFormState };
+    newEducationFormState.editing = newEducationEntry.id;
+    setEducationFormState(newEducationFormState);
+  }
+
+  function editEduEntry() {}
+
+  function changeEduInfoEntry(id, field, value) {
+    let newEducationInfo = [...educationInfo];
+    let eduEntryIdx = newEducationInfo.findIndex((entry) => entry.id === id);
+    newEducationInfo[eduEntryIdx][field] = value;
+    console.log(newEducationInfo);
+    setEducationInfo(newEducationInfo);
+  }
+
+  const setFunctions = {
+    educationInfo: setEducationInfo,
+  };
+
+  function changeInfoEntry(infoRef, id, field, value) {
+    let newInfo = [...educationInfo];
+    let entryIdx = newInfo.findIndex((entry) => entry.id === id);
+    newInfo[entryIdx][field] = value;
+    console.log(newInfo);
+    setFunctions[infoRef](newInfo);
+  }
+
   return (
     <>
       <div className="page-splitter">
@@ -47,10 +93,17 @@ function App() {
           <EducationForm
             educationInfo={educationInfo}
             educationFormState={educationFormState}
+            toggleEduFormCollapse={toggleEduFormCollapse}
+            changeEduInfoEntry={changeEduInfoEntry}
+            newEduEntry={newEduEntry}
+            editEduEntry={editEduEntry}
           />
         </div>
         <div className="right-panel-div">
           <PersonalDetailsHeader personalInfo={personalInfo} />
+          {educationInfo.map((educationEntry) => {
+            return <EducationCVListing educationEntry={educationEntry} />;
+          })}
         </div>
       </div>
     </>

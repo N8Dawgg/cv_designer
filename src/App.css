@@ -51,3 +51,11 @@ input {
 .page-splitter {
   display: flex;
 }
+
+.add-entry-button {
+  border: solid var(--main-background-color) 4px;
+}
+.form-bottom {
+  display: flex;
+  justify-content: center;
+}

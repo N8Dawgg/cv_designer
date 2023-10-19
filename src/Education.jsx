@@ -35,6 +35,54 @@ export function EducationForm({
                 )
               }
             />
+            <label>Degree</label>
+            <input
+              id="degree"
+              name="degree"
+              onChange={(e) =>
+                changeEduInfoEntry(
+                  educationFormState.editing,
+                  "degree",
+                  e.target.value
+                )
+              }
+            />
+            <label>Location</label>
+            <input
+              id="location"
+              name="location"
+              onChange={(e) =>
+                changeEduInfoEntry(
+                  educationFormState.editing,
+                  "location",
+                  e.target.value
+                )
+              }
+            />
+            <label>Start Date</label>
+            <input
+              id="startDate"
+              name="startDate"
+              onChange={(e) =>
+                changeEduInfoEntry(
+                  educationFormState.editing,
+                  "startDate",
+                  e.target.value
+                )
+              }
+            />
+            <label>End Date</label>
+            <input
+              id="endDate"
+              name="endDate"
+              onChange={(e) =>
+                changeEduInfoEntry(
+                  educationFormState.editing,
+                  "endDate",
+                  e.target.value
+                )
+              }
+            />
           </form>
         </div>
       </>
@@ -101,8 +149,10 @@ export function EducationCVListing({ educationEntry }) {
           <p>{educationEntry.startDate + " - " + educationEntry.endDate}</p>
           <p>{educationEntry.location}</p>
         </div>
-        <h3>{educationEntry.school}</h3>
-        <p>{educationEntry.degree}</p>
+        <div className="cv-listing-right">
+          <h3>{educationEntry.school}</h3>
+          <p>{educationEntry.degree}</p>
+        </div>
       </div>
     </>
   );

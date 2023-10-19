@@ -69,17 +69,20 @@ function App() {
     setEducationInfo(newEducationInfo);
   }
 
-  const setFunctions = {
+  /* HIGHLY EXPERIMENTAL LOL
+  let setFunctions = {
     educationInfo: setEducationInfo,
   };
 
+  
   function changeInfoEntry(infoRef, id, field, value) {
     let newInfo = [...educationInfo];
     let entryIdx = newInfo.findIndex((entry) => entry.id === id);
     newInfo[entryIdx][field] = value;
     console.log(newInfo);
-    setFunctions[infoRef](newInfo);
+    setFunctions[infoRef].call(newInfo);
   }
+  */
 
   return (
     <>

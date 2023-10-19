@@ -3,8 +3,11 @@
   --accent-color: #00ffff;
 }
 
-* {
-  margin: 8px;
+h1 {
+  margin: 0px;
+}
+h2 {
+  margin: 0px;
 }
 
 body {
@@ -21,7 +24,6 @@ input {
 }
 
 .left-panel-div {
-  flex: 1;
 }
 
 .right-panel-div {
@@ -39,8 +41,9 @@ input {
   border: solid 0px;
   background-color: white;
   border-radius: 8px;
-  padding: 8px;
+  padding: 24px;
   box-shadow: 0 0 8px gray;
+  margin: 24px;
 }
 
 .personal-details-header {
@@ -55,7 +58,21 @@ input {
 .add-entry-button {
   border: solid var(--main-background-color) 4px;
 }
+
 .form-bottom {
   display: flex;
   justify-content: center;
+}
+
+.cv-listing {
+  display: flex;
+}
+
+.cv-listing-left {
+  flex: 1;
+}
+
+.cv-listing-right {
+  flex: 2;
+  text-align: center;
 }

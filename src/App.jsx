@@ -4,10 +4,6 @@ import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
 import { EducationCVListing, EducationForm } from "./Education.jsx";
 import { v4 as uuid } from "uuid";
 
-function varToString(varObj) {
-  return Object.keys(varObj)[0];
-}
-
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "Name",
@@ -26,6 +22,23 @@ function App() {
     educationInfo: setEducationInfo,
     educationFormState: setEducationFormState,
   };
+
+  // let states = {
+  //   personalInfo: { reference: personalInfo, setter: setPersonalInfo },
+  //   educationInfo: setEducationInfo,
+  //   educationFormState: setEducationFormState,
+  // };
+
+  // function setState(stateName, field, value, id = null) {
+  //   let state = states[stateName];
+  //   let newInfo = { ...state.reference };
+  //   if (id === null) {
+  //     newInfo[field] = value;
+  //   } else {
+  //     newInfo[id][field] = value;
+  //   }
+  //   state.setter(newInfo);
+  // }
 
   function setState(stateName, stateRef, field, value, id = null) {
     let newInfo = { ...stateRef };
@@ -123,13 +136,10 @@ function App() {
             educationInfo={educationInfo}
             educationFormState={educationFormState}
             setState={setState}
-            toggleEduFormCollapse={toggleEduFormCollapse}
-            changeEduInfoEntry={changeEduInfoEntry}
             newEduEntry={newEduEntry}
             editEduEntry={editEduEntry}
             deleteEduEntry={deleteEduEntry}
             cancelEduEntry={cancelEduEntry}
-            finishEduEntry={finishEduEntry}
           />
         </div>
         <div className="white-page">

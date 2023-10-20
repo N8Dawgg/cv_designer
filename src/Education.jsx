@@ -33,6 +33,7 @@ export function EducationForm({
                   educationFormState.editing
                 )
               }
+              value={educationInfo[educationFormState.editing].school}
             />
             <label>Degree</label>
             <input
@@ -47,6 +48,7 @@ export function EducationForm({
                   educationFormState.editing
                 )
               }
+              value={educationInfo[educationFormState.editing].degree}
             />
             <label>Location</label>
             <input
@@ -61,6 +63,7 @@ export function EducationForm({
                   educationFormState.editing
                 )
               }
+              value={educationInfo[educationFormState.editing].location}
             />
             <label>Start Date</label>
             <input
@@ -75,6 +78,7 @@ export function EducationForm({
                   educationFormState.editing
                 )
               }
+              value={educationInfo[educationFormState.editing].startDate}
             />
             <label>End Date</label>
             <input
@@ -89,6 +93,7 @@ export function EducationForm({
                   educationFormState.editing
                 )
               }
+              value={educationInfo[educationFormState.editing].endDate}
             />
             <div className="form-button-div">
               <button
@@ -111,7 +116,14 @@ export function EducationForm({
                 className="finish-button"
                 name="finsih-education"
                 id="finish-education"
-                onClick={finishEduEntry}
+                onClick={() =>
+                  setState(
+                    "educationFormState",
+                    educationFormState,
+                    "editing",
+                    null
+                  )
+                }
               >
                 Finish
               </button>
@@ -157,11 +169,16 @@ export function EducationForm({
           >
             <h2>Education</h2>
           </div>
-          {Object.keys(educationInfo).map((educationEntry) => {
-            <EducationFormListing
-              educationEntry={educationEntry}
-              key={educationEntry.id}
-            />;
+          {Object.keys(educationInfo).map((key) => {
+            return (
+              <EducationFormListing
+                educationEntry={educationInfo[key]}
+                educationInfo={educationInfo}
+                entryID={key}
+                setState={setState}
+                key={key}
+              />
+            );
           })}
           <div className="form-bottom">
             <button className="add-entry-button" onClick={newEduEntry}>
@@ -185,10 +202,19 @@ location
 
 //delete, cancel and save buttons
 
-export function EducationFormListing({ educationEntry }) {
+export function EducationFormListing({
+  educationEntry,
+  educationFormState,
+  entryID,
+  setState,
+}) {
   return (
     <>
-      <div onClick={() => editEduEntry(educationEntry.id)}>
+      <div
+        onClick={() =>
+          setState("educationFormState", educationFormState, "editing", entryID)
+        }
+      >
         <h3>{educationEntry.school}</h3>
       </div>
     </>

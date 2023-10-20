@@ -4,27 +4,43 @@ import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
 import { EducationCVListing, EducationForm } from "./Education.jsx";
 import { v4 as uuid } from "uuid";
 
+function varToString(varObj) {
+  return Object.keys(varObj)[0];
+}
+
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
+    stateName: "personalInfo",
     fullName: "Name",
     email: "",
     phoneNumber: "",
     address: "",
   });
-  const [educationInfo, setEducationInfo] = useState({});
+  const [educationInfo, setEducationInfo] = useState({
+    stateName: "educationInfo",
+  });
   const [educationFormState, setEducationFormState] = useState({
+    stateName: "educationFormState",
     editing: null,
     isCollapsed: true,
   });
 
   let stateSetFunctions = {
     personalInfo: setPersonalInfo,
+    educationInfo: setEducationInfo,
+    educationFormState: setEducationFormState,
   };
-  function setState(stateName, stateRef, id, field, value) {
-    let newInfo = [...stateRef];
+
+  function setState(stateRef, field, value, id = null) {
+    if (id === null) {
+      let newInfo = { ...stateRef };
+      newInfo[field] = value;
+      stateSetFunctions[stateRef.stateName](newInfo);
+      return;
+    }
+    let newInfo = { ...stateRef };
     newInfo[id][field] = value;
-    console.log(newInfo);
-    stateSetFunctions[stateName].call(newInfo);
+    stateSetFunctions[stateRef.stateName](newInfo);
   }
 
   let personalDetailsReferences = {
@@ -56,16 +72,16 @@ function App() {
     let newEducationInfo = { ...educationInfo };
     let newEntryID = uuid();
     let newEducationEntry = {
-      school: "Test",
+      school: "",
       degree: "",
-      startDate: "",
-      endDate: "",
+      startDate: "2022",
+      endDate: "Present",
       location: "",
     };
-    newEducationInfo.push(newEducationEntry);
+    newEducationInfo[newEntryID] = newEducationEntry;
     setEducationInfo(newEducationInfo);
     let newEducationFormState = { ...educationFormState };
-    newEducationFormState.editing = newEducationEntry.id;
+    newEducationFormState.editing = newEntryID;
     setEducationFormState(newEducationFormState);
   }
 
@@ -112,6 +128,7 @@ function App() {
           <EducationForm
             educationInfo={educationInfo}
             educationFormState={educationFormState}
+            setState={setState}
             toggleEduFormCollapse={toggleEduFormCollapse}
             changeEduInfoEntry={changeEduInfoEntry}
             newEduEntry={newEduEntry}
@@ -124,11 +141,11 @@ function App() {
         <div className="white-page">
           <div className="right-panel-div">
             <PersonalDetailsHeader personalInfo={personalInfo} />
-            {educationInfo.map((educationEntry) => {
+            {Object.keys(educationInfo).map((key) => {
               return (
                 <EducationCVListing
-                  educationEntry={educationEntry}
-                  key={educationEntry.id}
+                  educationEntry={educationInfo[key]}
+                  key={key}
                 />
               );
             })}

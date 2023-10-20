@@ -4,6 +4,7 @@ export function EducationForm({
   educationInfo,
   educationFormState,
   toggleEduFormCollapse,
+  setState,
   changeEduInfoEntry,
   editEduEntry,
   newEduEntry,
@@ -24,10 +25,11 @@ export function EducationForm({
               id="school"
               name="school"
               onChange={(e) =>
-                changeEduInfoEntry(
-                  educationFormState.editing,
+                setState(
+                  educationInfo,
                   "school",
-                  e.target.value
+                  e.target.value,
+                  educationFormState.editing
                 )
               }
             />
@@ -36,10 +38,11 @@ export function EducationForm({
               id="degree"
               name="degree"
               onChange={(e) =>
-                changeEduInfoEntry(
-                  educationFormState.editing,
+                setState(
+                  educationInfo,
                   "degree",
-                  e.target.value
+                  e.target.value,
+                  educationFormState.editing
                 )
               }
             />
@@ -48,10 +51,11 @@ export function EducationForm({
               id="location"
               name="location"
               onChange={(e) =>
-                changeEduInfoEntry(
-                  educationFormState.editing,
+                setState(
+                  educationInfo,
                   "location",
-                  e.target.value
+                  e.target.value,
+                  educationFormState.editing
                 )
               }
             />
@@ -60,10 +64,11 @@ export function EducationForm({
               id="startDate"
               name="startDate"
               onChange={(e) =>
-                changeEduInfoEntry(
-                  educationFormState.editing,
+                setState(
+                  educationInfo,
                   "startDate",
-                  e.target.value
+                  e.target.value,
+                  educationFormState.editing
                 )
               }
             />
@@ -72,10 +77,11 @@ export function EducationForm({
               id="endDate"
               name="endDate"
               onChange={(e) =>
-                changeEduInfoEntry(
-                  educationFormState.editing,
+                setState(
+                  educationInfo,
                   "endDate",
-                  e.target.value
+                  e.target.value,
+                  educationFormState.editing
                 )
               }
             />
@@ -128,7 +134,7 @@ export function EducationForm({
           <div onClick={toggleEduFormCollapse}>
             <h2>Education</h2>
           </div>
-          {educationInfo.map((educationEntry) => {
+          {Object.keys(educationInfo).map((educationEntry) => {
             <EducationFormListing
               educationEntry={educationEntry}
               key={educationEntry.id}

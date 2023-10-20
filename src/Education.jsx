@@ -7,14 +7,10 @@ export function EducationForm({
   changeEduInfoEntry,
   editEduEntry,
   newEduEntry,
+  deleteEduEntry,
+  cancelEduEntry,
+  finishEduEntry,
 }) {
-  //IF the education editor is open:
-  //display the education editor
-  //Elseif the tab is closed
-  //display the closed tab
-  //else
-  //display the education listings in order, and then the close tab
-
   if (educationFormState.editing != null) {
     return (
       <>
@@ -22,7 +18,7 @@ export function EducationForm({
           <div>
             <h2>Education</h2>
           </div>
-          <form className="left-panel-form">
+          <div className="left-panel-form">
             <label>School</label>
             <input
               id="school"
@@ -83,7 +79,33 @@ export function EducationForm({
                 )
               }
             />
-          </form>
+            <div className="form-button-div">
+              <button
+                className="delete-button"
+                name="delete-education"
+                id="delete-education"
+                onClick={deleteEduEntry}
+              >
+                Delete
+              </button>
+              <button
+                className="cancel-button"
+                name="cancel-education"
+                id="cancel-education"
+                onClick={cancelEduEntry}
+              >
+                Cancel
+              </button>
+              <button
+                className="finish-button"
+                name="finsih-education"
+                id="finish-education"
+                onClick={finishEduEntry}
+              >
+                Finish
+              </button>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -107,7 +129,10 @@ export function EducationForm({
             <h2>Education</h2>
           </div>
           {educationInfo.map((educationEntry) => {
-            <EducationFormListing educationEntry={educationEntry} />;
+            <EducationFormListing
+              educationEntry={educationEntry}
+              key={educationEntry.id}
+            />;
           })}
           <div className="form-bottom">
             <button className="add-entry-button" onClick={newEduEntry}>

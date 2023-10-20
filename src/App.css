@@ -1,6 +1,7 @@
 :root {
   --main-background-color: #f3f4f6;
-  --accent-color: #00ffff;
+  --accent-color: #0368ff;
+  --font-color: white;
 }
 
 h1 {
@@ -23,11 +24,18 @@ input {
   background-color: var(--main-background-color);
 }
 
+.white-page {
+  margin: 24px;
+  background-color: white;
+  box-shadow: 0 0 8px gray;
+  height: 27.17647cm;
+}
+
 .left-panel-div {
 }
 
 .right-panel-div {
-  max-width: 21cm;
+  width: 21cm;
   min-width: 14cm;
 }
 
@@ -46,7 +54,11 @@ input {
   margin: 24px;
 }
 
+.form-button-div {
+}
+
 .personal-details-header {
+  color: var(--font-color);
   border: solid 0px;
   background-color: var(--accent-color);
 }

@@ -11,11 +11,21 @@ function App() {
     phoneNumber: "",
     address: "",
   });
-  const [educationInfo, setEducationInfo] = useState([]);
+  const [educationInfo, setEducationInfo] = useState({});
   const [educationFormState, setEducationFormState] = useState({
     editing: null,
     isCollapsed: true,
   });
+
+  let stateSetFunctions = {
+    personalInfo: setPersonalInfo,
+  };
+  function setState(stateName, stateRef, id, field, value) {
+    let newInfo = [...stateRef];
+    newInfo[id][field] = value;
+    console.log(newInfo);
+    stateSetFunctions[stateName].call(newInfo);
+  }
 
   let personalDetailsReferences = {
     fullNameRef: useRef(),
@@ -43,14 +53,14 @@ function App() {
   }
 
   function newEduEntry() {
-    let newEducationInfo = [...educationInfo];
+    let newEducationInfo = { ...educationInfo };
+    let newEntryID = uuid();
     let newEducationEntry = {
       school: "Test",
       degree: "",
       startDate: "",
       endDate: "",
       location: "",
-      id: uuid(),
     };
     newEducationInfo.push(newEducationEntry);
     setEducationInfo(newEducationInfo);
@@ -65,9 +75,15 @@ function App() {
     let newEducationInfo = [...educationInfo];
     let eduEntryIdx = newEducationInfo.findIndex((entry) => entry.id === id);
     newEducationInfo[eduEntryIdx][field] = value;
-    console.log(newEducationInfo);
     setEducationInfo(newEducationInfo);
   }
+
+  function deleteEduEntry() {}
+
+  let storedEduInfo;
+  function cancelEduEntry() {}
+
+  function finishEduEntry() {}
 
   /* HIGHLY EXPERIMENTAL LOL
   let setFunctions = {
@@ -100,13 +116,23 @@ function App() {
             changeEduInfoEntry={changeEduInfoEntry}
             newEduEntry={newEduEntry}
             editEduEntry={editEduEntry}
+            deleteEduEntry={deleteEduEntry}
+            cancelEduEntry={cancelEduEntry}
+            finishEduEntry={finishEduEntry}
           />
         </div>
-        <div className="right-panel-div">
-          <PersonalDetailsHeader personalInfo={personalInfo} />
-          {educationInfo.map((educationEntry) => {
-            return <EducationCVListing educationEntry={educationEntry} />;
-          })}
+        <div className="white-page">
+          <div className="right-panel-div">
+            <PersonalDetailsHeader personalInfo={personalInfo} />
+            {educationInfo.map((educationEntry) => {
+              return (
+                <EducationCVListing
+                  educationEntry={educationEntry}
+                  key={educationEntry.id}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </>

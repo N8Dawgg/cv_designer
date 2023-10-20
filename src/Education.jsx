@@ -26,6 +26,7 @@ export function EducationForm({
               name="school"
               onChange={(e) =>
                 setState(
+                  "educationInfo",
                   educationInfo,
                   "school",
                   e.target.value,
@@ -39,6 +40,7 @@ export function EducationForm({
               name="degree"
               onChange={(e) =>
                 setState(
+                  "educationInfo",
                   educationInfo,
                   "degree",
                   e.target.value,
@@ -52,6 +54,7 @@ export function EducationForm({
               name="location"
               onChange={(e) =>
                 setState(
+                  "educationInfo",
                   educationInfo,
                   "location",
                   e.target.value,
@@ -65,6 +68,7 @@ export function EducationForm({
               name="startDate"
               onChange={(e) =>
                 setState(
+                  "educationInfo",
                   educationInfo,
                   "startDate",
                   e.target.value,
@@ -78,6 +82,7 @@ export function EducationForm({
               name="endDate"
               onChange={(e) =>
                 setState(
+                  "educationInfo",
                   educationInfo,
                   "endDate",
                   e.target.value,
@@ -120,7 +125,16 @@ export function EducationForm({
     return (
       <>
         <div className="form-container">
-          <div onClick={toggleEduFormCollapse}>
+          <div
+            onClick={() => {
+              setState(
+                "educationFormState",
+                educationFormState,
+                "isCollapsed",
+                !educationFormState.isCollapsed
+              );
+            }}
+          >
             <h2>Education</h2>
           </div>
         </div>
@@ -131,7 +145,16 @@ export function EducationForm({
     return (
       <>
         <div className="form-container">
-          <div onClick={toggleEduFormCollapse}>
+          <div
+            onClick={() => {
+              setState(
+                "educationFormState",
+                educationFormState,
+                "isCollapsed",
+                !educationFormState.isCollapsed
+              );
+            }}
+          >
             <h2>Education</h2>
           </div>
           {Object.keys(educationInfo).map((educationEntry) => {

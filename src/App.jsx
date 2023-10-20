@@ -10,17 +10,13 @@ function varToString(varObj) {
 
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
-    stateName: "personalInfo",
     fullName: "Name",
     email: "",
     phoneNumber: "",
     address: "",
   });
-  const [educationInfo, setEducationInfo] = useState({
-    stateName: "educationInfo",
-  });
+  const [educationInfo, setEducationInfo] = useState({});
   const [educationFormState, setEducationFormState] = useState({
-    stateName: "educationFormState",
     editing: null,
     isCollapsed: true,
   });
@@ -31,16 +27,14 @@ function App() {
     educationFormState: setEducationFormState,
   };
 
-  function setState(stateRef, field, value, id = null) {
-    if (id === null) {
-      let newInfo = { ...stateRef };
-      newInfo[field] = value;
-      stateSetFunctions[stateRef.stateName](newInfo);
-      return;
-    }
+  function setState(stateName, stateRef, field, value, id = null) {
     let newInfo = { ...stateRef };
-    newInfo[id][field] = value;
-    stateSetFunctions[stateRef.stateName](newInfo);
+    if (id === null) {
+      newInfo[field] = value;
+    } else {
+      newInfo[id][field] = value;
+    }
+    stateSetFunctions[stateName](newInfo);
   }
 
   let personalDetailsReferences = {

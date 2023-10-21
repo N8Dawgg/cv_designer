@@ -3,16 +3,14 @@ import { v4 as uuid } from "uuid";
 export function EducationForm({
   educationInfo,
   educationFormState,
-  toggleEduFormCollapse,
   setState,
-  changeEduInfoEntry,
-  editEduEntry,
-  newEduEntry,
-  deleteEduEntry,
-  cancelEduEntry,
-  finishEduEntry,
+  addStateEntry,
+  removeStateEntry,
+  storeState,
+  restoreState,
 }) {
   if (educationFormState.editing != null) {
+    console.log("EduForm: ", educationInfo);
     return (
       <>
         <div className="form-container">
@@ -27,7 +25,6 @@ export function EducationForm({
               onChange={(e) =>
                 setState(
                   "educationInfo",
-                  educationInfo,
                   "school",
                   e.target.value,
                   educationFormState.editing
@@ -42,7 +39,6 @@ export function EducationForm({
               onChange={(e) =>
                 setState(
                   "educationInfo",
-                  educationInfo,
                   "degree",
                   e.target.value,
                   educationFormState.editing
@@ -57,7 +53,6 @@ export function EducationForm({
               onChange={(e) =>
                 setState(
                   "educationInfo",
-                  educationInfo,
                   "location",
                   e.target.value,
                   educationFormState.editing
@@ -72,7 +67,6 @@ export function EducationForm({
               onChange={(e) =>
                 setState(
                   "educationInfo",
-                  educationInfo,
                   "startDate",
                   e.target.value,
                   educationFormState.editing
@@ -87,7 +81,6 @@ export function EducationForm({
               onChange={(e) =>
                 setState(
                   "educationInfo",
-                  educationInfo,
                   "endDate",
                   e.target.value,
                   educationFormState.editing
@@ -100,7 +93,10 @@ export function EducationForm({
                 className="delete-button"
                 name="delete-education"
                 id="delete-education"
-                onClick={deleteEduEntry}
+                onClick={() => {
+                  removeStateEntry("educationInfo", educationFormState.editing);
+                  setState("educationFormState", "editing", null);
+                }}
               >
                 Delete
               </button>
@@ -108,22 +104,18 @@ export function EducationForm({
                 className="cancel-button"
                 name="cancel-education"
                 id="cancel-education"
-                onClick={cancelEduEntry}
+                onClick={() => {
+                  setState("educationFormState", "editing", null);
+                  restoreState("educationInfo");
+                }}
               >
                 Cancel
               </button>
               <button
                 className="finish-button"
-                name="finsih-education"
+                name="finish-education"
                 id="finish-education"
-                onClick={() =>
-                  setState(
-                    "educationFormState",
-                    educationFormState,
-                    "editing",
-                    null
-                  )
-                }
+                onClick={() => setState("educationFormState", "editing", null)}
               >
                 Finish
               </button>
@@ -141,7 +133,6 @@ export function EducationForm({
             onClick={() => {
               setState(
                 "educationFormState",
-                educationFormState,
                 "isCollapsed",
                 !educationFormState.isCollapsed
               );
@@ -153,7 +144,6 @@ export function EducationForm({
       </>
     );
   } else {
-    let content;
     return (
       <>
         <div className="form-container">
@@ -161,7 +151,6 @@ export function EducationForm({
             onClick={() => {
               setState(
                 "educationFormState",
-                educationFormState,
                 "isCollapsed",
                 !educationFormState.isCollapsed
               );
@@ -169,6 +158,9 @@ export function EducationForm({
           >
             <h2>Education</h2>
           </div>
+          {educationInfo.keys().length > 0 && (
+            <div className="cv-list-header"></div>
+          )}
           {Object.keys(educationInfo).map((key) => {
             return (
               <EducationFormListing
@@ -176,12 +168,20 @@ export function EducationForm({
                 educationInfo={educationInfo}
                 entryID={key}
                 setState={setState}
+                storeState={storeState}
                 key={key}
               />
             );
           })}
-          <div className="form-bottom">
-            <button className="add-entry-button" onClick={newEduEntry}>
+          <div className="form-buttom">
+            <button
+              className="add-entry-button"
+              onClick={() => {
+                storeState("educationInfo");
+                let newEntryID = addStateEntry("educationInfo");
+                setState("educationFormState", "editing", newEntryID);
+              }}
+            >
               + Education
             </button>
           </div>
@@ -207,13 +207,15 @@ export function EducationFormListing({
   educationFormState,
   entryID,
   setState,
+  storeState,
 }) {
   return (
     <>
       <div
-        onClick={() =>
-          setState("educationFormState", educationFormState, "editing", entryID)
-        }
+        onClick={() => {
+          storeState("educationInfo");
+          setState("educationFormState", "editing", entryID);
+        }}
       >
         <h3>{educationEntry.school}</h3>
       </div>

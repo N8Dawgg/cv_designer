@@ -4,6 +4,8 @@ import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
 import { EducationCVListing, EducationForm } from "./Education.jsx";
 import { v4 as uuid } from "uuid";
 
+let storedStates = {};
+
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "Name",
@@ -17,37 +19,73 @@ function App() {
     isCollapsed: true,
   });
 
-  let stateSetFunctions = {
-    personalInfo: setPersonalInfo,
-    educationInfo: setEducationInfo,
-    educationFormState: setEducationFormState,
-  };
-
-  // let states = {
-  //   personalInfo: { reference: personalInfo, setter: setPersonalInfo },
+  // let stateSetFunctions = {
+  //   personalInfo: setPersonalInfo,
   //   educationInfo: setEducationInfo,
   //   educationFormState: setEducationFormState,
   // };
 
-  // function setState(stateName, field, value, id = null) {
-  //   let state = states[stateName];
-  //   let newInfo = { ...state.reference };
-  //   if (id === null) {
-  //     newInfo[field] = value;
-  //   } else {
-  //     newInfo[id][field] = value;
-  //   }
-  //   state.setter(newInfo);
-  // }
+  let states = {
+    personalInfo: { reference: personalInfo, setter: setPersonalInfo },
+    educationInfo: {
+      reference: educationInfo,
+      setter: setEducationInfo,
+      newEntry: {
+        school: "",
+        degree: "",
+        startDate: "",
+        endDate: "",
+        location: "",
+      },
+    },
+    educationFormState: {
+      reference: educationFormState,
+      setter: setEducationFormState,
+    },
+  };
 
-  function setState(stateName, stateRef, field, value, id = null) {
-    let newInfo = { ...stateRef };
+  function setState(stateName, field, value, id = null) {
+    let state = states[stateName];
+    let newInfo = { ...state.reference };
     if (id === null) {
       newInfo[field] = value;
     } else {
       newInfo[id][field] = value;
     }
-    stateSetFunctions[stateName](newInfo);
+    console.log(newInfo);
+    state.setter(newInfo);
+  }
+
+  function addStateEntry(stateName, entry = null) {
+    let state = states[stateName];
+    let newInfo = { ...state.reference };
+    let id = uuid();
+    if (entry === null) {
+      newInfo[id] = { ...state.newEntry };
+    } else {
+      newInfo[id] = entry;
+    }
+    console.log(newInfo);
+    state.setter(newInfo);
+    return id;
+  }
+
+  function removeStateEntry(stateName, id) {
+    let state = states[stateName];
+    let newInfo = { ...state.reference };
+    delete newInfo[id];
+    state.setter(newInfo);
+  }
+
+  function storeState(stateName) {
+    storedStates[stateName] = { ...states[stateName].reference };
+    console.log("storedState:", storedStates);
+  }
+
+  function restoreState(stateName) {
+    let state = states[stateName];
+    console.log(storedStates[stateName]);
+    state.setter({ ...storedStates[stateName] });
   }
 
   let personalDetailsReferences = {
@@ -69,60 +107,6 @@ function App() {
     setPersonalInfo(newPersonalInfo);
   }
 
-  function toggleEduFormCollapse() {
-    let newEducationFormState = { ...educationFormState };
-    newEducationFormState.isCollapsed = !newEducationFormState.isCollapsed;
-    setEducationFormState(newEducationFormState);
-  }
-
-  function newEduEntry() {
-    let newEducationInfo = { ...educationInfo };
-    let newEntryID = uuid();
-    let newEducationEntry = {
-      school: "",
-      degree: "",
-      startDate: "2022",
-      endDate: "Present",
-      location: "",
-    };
-    newEducationInfo[newEntryID] = newEducationEntry;
-    setEducationInfo(newEducationInfo);
-    let newEducationFormState = { ...educationFormState };
-    newEducationFormState.editing = newEntryID;
-    setEducationFormState(newEducationFormState);
-  }
-
-  function editEduEntry() {}
-
-  function changeEduInfoEntry(id, field, value) {
-    let newEducationInfo = [...educationInfo];
-    let eduEntryIdx = newEducationInfo.findIndex((entry) => entry.id === id);
-    newEducationInfo[eduEntryIdx][field] = value;
-    setEducationInfo(newEducationInfo);
-  }
-
-  function deleteEduEntry() {}
-
-  let storedEduInfo;
-  function cancelEduEntry() {}
-
-  function finishEduEntry() {}
-
-  /* HIGHLY EXPERIMENTAL LOL
-  let setFunctions = {
-    educationInfo: setEducationInfo,
-  };
-
-  
-  function changeInfoEntry(infoRef, id, field, value) {
-    let newInfo = [...educationInfo];
-    let entryIdx = newInfo.findIndex((entry) => entry.id === id);
-    newInfo[entryIdx][field] = value;
-    console.log(newInfo);
-    setFunctions[infoRef].call(newInfo);
-  }
-  */
-
   return (
     <>
       <div className="page-splitter">
@@ -136,10 +120,10 @@ function App() {
             educationInfo={educationInfo}
             educationFormState={educationFormState}
             setState={setState}
-            newEduEntry={newEduEntry}
-            editEduEntry={editEduEntry}
-            deleteEduEntry={deleteEduEntry}
-            cancelEduEntry={cancelEduEntry}
+            addStateEntry={addStateEntry}
+            removeStateEntry={removeStateEntry}
+            storeState={storeState}
+            restoreState={restoreState}
           />
         </div>
         <div className="white-page">

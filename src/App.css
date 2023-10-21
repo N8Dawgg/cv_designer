@@ -31,9 +31,6 @@ input {
   height: 27.17647cm;
 }
 
-.left-panel-div {
-}
-
 .right-panel-div {
   width: 21cm;
   min-width: 14cm;
@@ -55,6 +52,8 @@ input {
 }
 
 .form-button-div {
+  display: flex;
+  justify-content: space-between;
 }
 
 .personal-details-header {
@@ -71,9 +70,10 @@ input {
   border: solid var(--main-background-color) 4px;
 }
 
-.form-bottom {
+.form-buttom {
   display: flex;
   justify-content: center;
+  margin: 8px;
 }
 
 .cv-listing {
@@ -87,4 +87,10 @@ input {
 .cv-listing-right {
   flex: 2;
   text-align: center;
+}
+
+.finish-button,
+.cancel-button,
+.delete-button {
+  margin: 8px;
 }

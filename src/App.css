@@ -1,7 +1,7 @@
 :root {
   --main-background-color: #f3f4f6;
   --accent-color: #0368ff;
-  --font-color: white;
+  --accent-font-color: white;
 }
 
 h1 {
@@ -16,7 +16,8 @@ body {
   color: black;
 }
 
-input {
+input,
+textarea {
   color: black;
   border: solid 0px;
   border-radius: 8px;
@@ -57,7 +58,7 @@ input {
 }
 
 .personal-details-header {
-  color: var(--font-color);
+  color: var(--accent-font-color);
   border: solid 0px;
   background-color: var(--accent-color);
 }
@@ -89,8 +90,16 @@ input {
   text-align: center;
 }
 
+.cv-list-header {
+  background-color: var(--accent-color);
+  color: var(--accent-font-color);
+  text-align: center;
+}
+
 .finish-button,
 .cancel-button,
 .delete-button {
+  display: inline-flex;
+  align-items: center;
   margin: 8px;
 }

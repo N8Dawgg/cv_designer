@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { Icon } from "./Icon";
 
 export function EducationForm({
   educationInfo,
@@ -15,7 +16,7 @@ export function EducationForm({
       <>
         <div className="form-container">
           <div>
-            <h2>Education</h2>
+            <h2> {Icon.education()} Education</h2>
           </div>
           <div className="left-panel-form">
             <label>School</label>
@@ -98,7 +99,7 @@ export function EducationForm({
                   setState("educationFormState", "editing", null);
                 }}
               >
-                Delete
+                {Icon.trash()} Delete
               </button>
               <button
                 className="cancel-button"
@@ -109,7 +110,7 @@ export function EducationForm({
                   restoreState("educationInfo");
                 }}
               >
-                Cancel
+                {Icon.close()} Cancel
               </button>
               <button
                 className="finish-button"
@@ -117,7 +118,7 @@ export function EducationForm({
                 id="finish-education"
                 onClick={() => setState("educationFormState", "editing", null)}
               >
-                Finish
+                {Icon.check()} Finish
               </button>
             </div>
           </div>
@@ -138,7 +139,7 @@ export function EducationForm({
               );
             }}
           >
-            <h2>Education</h2>
+            <h2> {Icon.education()} Education</h2>
           </div>
         </div>
       </>
@@ -156,11 +157,8 @@ export function EducationForm({
               );
             }}
           >
-            <h2>Education</h2>
+            <h2> {Icon.education()} Education</h2>
           </div>
-          {educationInfo.keys().length > 0 && (
-            <div className="cv-list-header"></div>
-          )}
           {Object.keys(educationInfo).map((key) => {
             return (
               <EducationFormListing

@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import "./App.css";
 import { PersonalDetailsForm, PersonalDetailsHeader } from "./Components.jsx";
 import { EducationCVListing, EducationForm } from "./Education.jsx";
+import { EmploymentCVListing, EmploymentForm } from "./Employment.jsx";
 import { v4 as uuid } from "uuid";
 
 let storedStates = {};
@@ -18,12 +19,11 @@ function App() {
     editing: null,
     isCollapsed: true,
   });
-
-  // let stateSetFunctions = {
-  //   personalInfo: setPersonalInfo,
-  //   educationInfo: setEducationInfo,
-  //   educationFormState: setEducationFormState,
-  // };
+  const [employmentInfo, setEmploymentInfo] = useState({});
+  const [employmentFormState, setEmploymentFormState] = useState({
+    editing: null,
+    isCollapsed: true,
+  });
 
   let states = {
     personalInfo: { reference: personalInfo, setter: setPersonalInfo },
@@ -31,16 +31,26 @@ function App() {
       reference: educationInfo,
       setter: setEducationInfo,
       newEntry: {
-        school: "",
-        degree: "",
+        employer: "",
+        position: "",
         startDate: "",
         endDate: "",
         location: "",
+        description: "",
       },
     },
     educationFormState: {
       reference: educationFormState,
       setter: setEducationFormState,
+    },
+    employmentInfo: {
+      reference: employmentInfo,
+      setter: setEmploymentInfo,
+      newEntry: {},
+    },
+    employmentFormState: {
+      reference: employmentFormState,
+      setter: setEmploymentFormState,
     },
   };
 
@@ -125,18 +135,44 @@ function App() {
             storeState={storeState}
             restoreState={restoreState}
           />
+          <EmploymentForm
+            employmentInfo={employmentInfo}
+            employmentFormState={employmentFormState}
+            setState={setState}
+            addStateEntry={addStateEntry}
+            removeStateEntry={removeStateEntry}
+            storeState={storeState}
+            restoreState={restoreState}
+          />
         </div>
         <div className="white-page">
           <div className="right-panel-div">
             <PersonalDetailsHeader personalInfo={personalInfo} />
-            {Object.keys(educationInfo).map((key) => {
-              return (
-                <EducationCVListing
-                  educationEntry={educationInfo[key]}
-                  key={key}
-                />
-              );
-            })}
+            <div style={{ padding: "16px" }}>
+              {Object.keys(educationInfo).length > 0 && (
+                <div className="cv-list-header">Education</div>
+              )}
+              {Object.keys(educationInfo).map((key) => {
+                return (
+                  <EducationCVListing
+                    educationEntry={educationInfo[key]}
+                    key={key}
+                  />
+                );
+              })}
+
+              {Object.keys(employmentInfo).length > 0 && (
+                <div className="cv-list-header">Employment</div>
+              )}
+              {Object.keys(employmentInfo).map((key) => {
+                return (
+                  <EmploymentCVListing
+                    employmentEntry={employmentInfo[key]}
+                    key={key}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
